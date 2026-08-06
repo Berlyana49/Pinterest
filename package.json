@@ -34,7 +34,7 @@
     "web": "expo start --web",
     "build:web": "expo export --platform web --output-dir web-dist",
     "build": "expo export --platform web --output-dir web-dist",
-    "deploy": "expo export --platform web --output-dir web-dist && gh-pages -d web-dist"
+    "deploy": "expo export --platform web --output-dir web-dist && node -e \"require('fs').writeFileSync('web-dist/.nojekyll', ''); require('fs').copyFileSync('web-dist/index.html', 'web-dist/404.html')\" && gh-pages -d web-dist -n"
   },
   "private": true
 }
