@@ -1,17 +1,13 @@
-import { StyleSheet, FlatList, Image, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView, View } from 'react-native';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { View } from '@/components/Themed';
 import Pin from '@/components/Pin';
 import pins from '@/assets/data/pins';
 
 export default function HomeScreen() {
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollView} contentContainerStyle={{ paddingBottom: 20 }}>
       <View style={styles.container}>
-        
         <View style={styles.column}>
-
           {pins
             .filter((item, index) => index % 2 === 0)
             .map((pin) => (
@@ -20,7 +16,6 @@ export default function HomeScreen() {
         </View>
 
         <View style={styles.column}>
-          
           {pins
             .filter((item, index) => index % 2 === 1)
             .map((pin) => (
@@ -33,11 +28,15 @@ export default function HomeScreen() {
 }
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+  },
   container: {
     padding: 10,
     flexDirection: 'row',
   },
   column: {
-    flex:1,
+    flex: 1,
   },
 });

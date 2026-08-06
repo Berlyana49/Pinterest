@@ -1,46 +1,47 @@
-import {View, Image, Text, StyleSheet, Pressable} from "react-native";
+import { View, Image, Text, StyleSheet, Pressable } from "react-native";
 import { Entypo } from '@expo/vector-icons';
-import {useState, useEffect} from "react";
-
+import { useState, useEffect } from "react";
 
 const Pin = (props) => {
-    const { image, title } = props.pin;
+  const { image, title } = props.pin;
+  const [ratio, setRatio] = useState(1);
 
-    const [ratio, setRatio] = useState(1);
+  useEffect(() => {
+    if (image) {
+      Image.getSize(
+        image, 
+        (width, height) => {
+          if (width && height) {
+            setRatio(width / height);
+          }
+        },
+        (error) => console.log("Image getSize error:", error)
+      );
+    }
+  }, [image]);
 
+  const onLike = () => {};
 
-    useEffect(() => {
-        if (image) {
-            Image.getSize(
-                image, 
-                (width, height) => setRatio(width / height),
-                (error) => console.log(error)
-            );
-        }
-    }, [image]);
+  return (
+    <View style={styles.pin}>
+      <View style={styles.imageContainer}> 
+        <Image 
+          source={{ uri: image }} 
+          style={[styles.image, { aspectRatio: ratio }]}
+          resizeMode="cover"
+        />
 
-    const onLike = () => {};
-
-    
-    return (
-        <View style={styles.pin}>
-            <View> 
-                <Image 
-                    source={{ 
-                    uri: image, 
-                    }} 
-                    style={[styles.image, {aspectRatio: ratio}]}
-                />
-
-                <Pressable onPress={onLike} style ={styles.heartBtn}>
-                    <Entypo name="heart-outlined" size={16} color="black" />
-                </Pressable>
-            </View>
-            <Text style={styles.title} numberOfLines={2}>
-                {title}
-            </Text>
-        </View>
-    );
+        <Pressable onPress={onLike} style={styles.heartBtn}>
+          <Entypo name="heart-outlined" size={16} color="black" />
+        </Pressable>
+      </View>
+      {title ? (
+        <Text style={styles.title} numberOfLines={2}>
+          {title}
+        </Text>
+      ) : null}
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -48,26 +49,27 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 4,
   },
-
+  imageContainer: {
+    position: "relative",
+    width: "100%",
+  },
   title: {
-    fontSize: 16,
-    lineHeight: 22,
+    fontSize: 14,
+    lineHeight: 20,
     fontWeight: "600",
-    margin: 5,
+    marginVertical: 5,
     color: "#181818",
   },
-
   image: {
     width: "100%",
     borderRadius: 15,
   },
-
   heartBtn: {
     backgroundColor: '#D3CFD4',
     position: 'absolute',
     bottom: 10,
     right: 10,
-    padding: 5,
+    padding: 6,
     borderRadius: 50,
   },
 });
