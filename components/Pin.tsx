@@ -1,26 +1,10 @@
 import { View, Image, Text, StyleSheet, Pressable } from "react-native";
 import { Entypo } from '@expo/vector-icons';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Pin = (props) => {
   const { image, title } = props.pin;
   const [ratio, setRatio] = useState(1);
-
-  useEffect(() => {
-    if (image) {
-      Image.getSize(
-        image, 
-        (width, height) => {
-          if (width && height) {
-            setRatio(width / height);
-          }
-        },
-        (error) => console.log("Image getSize error:", error)
-      );
-    }
-  }, [image]);
-
-  const onLike = () => {};
 
   return (
     <View style={styles.pin}>
@@ -29,9 +13,15 @@ const Pin = (props) => {
           source={{ uri: image }} 
           style={[styles.image, { aspectRatio: ratio }]}
           resizeMode="cover"
+          onLoad={(e) => {
+            const { width, height } = e.nativeEvent.source;
+            if (width && height) {
+              setRatio(width / height);
+            }
+          }}
         />
 
-        <Pressable onPress={onLike} style={styles.heartBtn}>
+        <Pressable onPress={() => {}} style={styles.heartBtn}>
           <Entypo name="heart-outlined" size={16} color="black" />
         </Pressable>
       </View>
@@ -63,6 +53,7 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     borderRadius: 15,
+    minHeight: 100,
   },
   heartBtn: {
     backgroundColor: '#D3CFD4',
